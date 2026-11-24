@@ -1,5 +1,5 @@
 import GameTile from "./gametile.mjs";
-import { slotDistance } from "./helpers.mjs";
+import { slotDistance, countInversions } from "./helpers.mjs";
 
 export default class GameGrid {
 
@@ -8,6 +8,8 @@ export default class GameGrid {
     #tiles
     #floater
     #tilesize
+    #startorder
+    #movecount
 
     constructor() {
         this.#setGrid();
@@ -54,20 +56,21 @@ export default class GameGrid {
         this.#floater = floater;
     }
 
-    #moveTile(tileprops) {
+    #moveTile(movedata) {
         const floatSlot = this.#floater.currslot
-        const tileSlot = tileprops.currslot
+        const tileSlot = movedata.currslot
 
-        const toFloat = slotDistance(tileSlot, floatSlot)
+//        const toFloat = slotDistance(tileSlot, floatSlot)
 
-        if ( toFloat === 1 ) {
-            this.#tiles[tileprops.tileid].toSlot(floatSlot)
+        if ( slotDistance(tileSlot, floatSlot) === 1 ) {
+            this.#tiles[movedata.tileid].toSlot(floatSlot)
             this.#floater.toSlot(tileSlot)
 
-            tileprops
-            tileprops.tofloat = toFloat
+            movedata.movecount = ++this.#movecount
+            movedata.inversions = this.#getInversions()
+            movedata.minmoves = this.#minMoves()
 
-            const event = new CustomEvent("tilemove", { detail: tileprops } )
+            const event = new CustomEvent("tilemove", { detail: movedata } )
             this.#grid.dispatchEvent(event)
         }
     }
@@ -91,47 +94,32 @@ export default class GameGrid {
         return slotdata
     }
 
-    #getInversions(arr) {
-        let count = 0;
-        for (let i = 0; i < arr.length; i++) {
-            for (let j = i + 1; j < arr.length; j++) {
-                if (arr[i] > arr[j]) {
-                    count++;
-                }
-            }
-        }
-        
-        return count;
+    #getInversions() {
+        const arr = this.#tiles
+            .filter( tile => tile.tileUI.id !== "floater")
+            .map( tile => tile.currslot )
+
+        return countInversions(arr)
     }
 
     newGame() {
-        const startOrder = this.#startOrder();
-        for (let i = 0; i < this.#tiles.length; i++) {
-            this.#tiles[i].startslot = startOrder[i]
-//            this.#tiles[i].toSlot(startOrder[i])
-        }
-        
-        const inversions = this.#getInversions(startOrder);
-        const floaterRow = (4 - Math.floor(this.#floater.currslot / 4)) - 1
-        const isSolvable = (inversions + floaterRow) % 2 === 0;
-
-        const moveCount = this.#tiles
-            .filter( tile => tile.tileUI.id !== "floater")
-            .map( tile => tile.distance )
-            .reduce( (sum, distance) => sum + distance )
-
-        const gamedata = {
-            startOrder: startOrder,
-            invertions: inversions,
-            floaterRow: floaterRow,
-            solvable: isSolvable,
-            minmoves: moveCount
-        };
-        
-        return gamedata;
+        this.#startorder = this.#newStartOrder();
+        this.#setBoard();
+        return this.#gamestart()
     }
 
-    #startOrder() {
+    #setBoard() {
+        if (!this.#startorder)
+            this.#startorder = this.#newStartOrder();
+
+        this.#movecount = 0;
+        for (let i = 0; i < this.#tiles.length; i++) {
+            this.#tiles[i].toSlot(this.#startorder[i])
+        }
+    }
+
+
+    #newStartOrder() {
         const stack = [...Array(16).keys()];
         for (let i = stack.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
@@ -145,14 +133,32 @@ export default class GameGrid {
         return this.#grid
     }
 
-    restart() {
-        console.log(`Restart`);
+    #minMoves() {
+        return this.#tiles
+            .filter( tile => tile.tileUI.id !== "floater")
+            .map( tile => tile.distance )
+            .reduce( (sum, distance) => sum + distance )
     }
 
-    #gamestart(ret) {
+    restart() {
+        this.#setBoard();
+        return this.#gamestart()
+    }
 
-        const event = new CustomEvent("started", { detail: ret } )
-		this.#grid.dispatchEvent(event)
+    #gamestart() {
+        const inversions = this.#getInversions();
+        const minmoves = this.#minMoves();
+        const floaterRow = (4 - Math.floor(this.#floater.currslot / 4)) - 1
+        const isSolvable = (inversions + floaterRow) % 2 === 0;
+
+        const gamedata = {
+            solvable: isSolvable,
+            invertions: inversions,
+            minmoves: minmoves,
+            movecount: this.#movecount
+        };
+
+        return gamedata;
     }
 
     get tileSize() {

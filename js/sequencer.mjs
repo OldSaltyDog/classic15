@@ -1,26 +1,38 @@
 import GameGrid from "./gamegrid.mjs";
 
 const gamegrid = new GameGrid();
-document.querySelector('#tilesize-op').textContent = gamegrid.tileSize;
+//document.querySelector('#tilesize-op').textContent = gamegrid.tileSize;
 
 const btnNew = document.querySelector('#newgame');
+
+const solvableOp = document.querySelector('#solvable-op')
+const inversalsOp = document.querySelector('#inversals-op')
+const movecountOp = document.querySelector('#movecount-op')
+const minmovesOp = document.querySelector('#minmoves-op')
+
 btnNew.addEventListener('click', (e) => {
+
     e.preventDefault();
     const gamedata = gamegrid.newGame();
-    document.querySelector('#solvable-op').textContent = (gamedata.solvable === true) ? "True" : "False"
-    document.querySelector('#inversals').textContent = gamedata.invertions
-    document.querySelector('#floatrow').textContent = gamedata.floaterRow
-    document.querySelector('#minmoves').textContent = gamedata.minmoves
+    solvableOp.textContent = (gamedata.solvable === true) ? "True" : "False"
+    inversalsOp.textContent = gamedata.invertions
+    movecountOp.textContent = gamedata.movecount
+    minmovesOp.textContent = gamedata.minmoves
     
 })
 
 gamegrid.grid.addEventListener( "tilemove", (ret) => {
-    const deets = ret.detail
-    document.querySelector('#tileid-op').textContent = deets.tileid;
-    document.querySelector('#tofloat-op').textContent = deets.tofloat;
-    document.querySelector('#currslot-op').textContent = deets.currslot;
-    document.querySelector('#homeslot-op').textContent = deets.homeslot;
-    document.querySelector('#distance-op').textContent = deets.distance;
+    const gamedata = ret.detail
+    inversalsOp.textContent = gamedata.inversions
+    movecountOp.textContent = gamedata.movecount
+    minmovesOp.textContent = gamedata.minmoves
 })
 
 const btnRestart = document.querySelector('#restart');
+btnRestart.addEventListener( "click", (e) => {
+    e.preventDefault();
+    const gamedata = gamegrid.restart();
+    inversalsOp.textContent = gamedata.inversions
+    movecountOp.textContent = gamedata.movecount
+    minmovesOp.textContent = gamedata.minmoves
+})

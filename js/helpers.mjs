@@ -32,4 +32,17 @@ const slotDistance = (s1, s2) => {
     return Math.abs(slotFrom.x - slotTo.x) + Math.abs(slotFrom.y - slotTo.y);
 } 
 
-export { slotData, slotDistance }
+const countInversions = (arr) => {
+    let count = 0;
+    for (let i = 0; i < arr.length; i++) {
+        for (let j = i + 1; j < arr.length; j++) {
+            if (arr[i] > arr[j]) {
+                count++;
+            }
+        }
+    }
+    
+    return count;
+}
+
+export { slotData, slotDistance, countInversions }

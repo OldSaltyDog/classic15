@@ -30,20 +30,18 @@ export default class GameTile {
         this.#tile.addEventListener( "click", (e) => {
             
             e.stopPropagation();
-
-            const ret = {
-                tileid: this.#id,
-                homeslot: this.#homeslot,
-                currslot: this.#currslot,
-                distance:this.distance
-            }
-
-            this.#clicked(ret);
+            this.#clicked();
         })
     }
 
-    #clicked(ret) {
-        
+    #clicked() {
+        const ret = {
+            tileid: this.#id,
+            homeslot: this.#homeslot,
+            currslot: this.#currslot,
+            distance: this.distance
+        }
+
         const event = new CustomEvent("tileclick", { detail: ret } )
         this.#tile.dispatchEvent(event)
     }
