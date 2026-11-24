@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="15 Puzzle Game" />
+    <title>Resequent</title>
+    <link rel="stylesheet" href="./css/main.css" />
+</head>
+<style>
+        
+</style>
+<body class="wx-column">
+    
+    <main>
+
+
+        <article class="gamebox">
+            <h5>Classic 15</h5>
+            <section id="gamegrid"></section>
+            <section class="row">
+                <button id="restart">
+                    <span class="wx-rune"></span>
+                    <label>Restart</label>
+                </button>
+                <button id="newgame">
+                    <span class="wx-rune"></span>
+                    <label>New</label>
+                </button>
+            </section>
+
+        </article> 
+
+        <article class="debugpanel">
+            <h6>Game</h6>
+            <output id="startstack"></output>
+            <section class="row">
+                <span>Solvable:</span>
+                <output id="solvable-op"></output>
+            </section>
+            <section class="row">
+                <span>Inversals:</span>
+                <output id="inversals"></output>
+            </section>
+            <section class="row">
+                <span>FloaterRow:</span>
+                <output id="floatrow"></output>
+            </section>
+            <section class="row">
+                <span>Distance:</span>
+                <output id="mandist-op"></output>
+            </section>
+            <section class="row">
+                <span>Tile Size:</span>
+                <output id="tilesize-op"></output>
+            </section>
+            <section class="row">
+                <span>Min Moves:</span>
+                <output id="minmoves"></output>
+            </section>
+            <hr />
+            <h6>Tile</h6>
+            <section class="row">
+                <span>TileID:</span>
+                <output id="tileid-op"></output>
+            </section>
+            <section class="row">
+                <span>From Float:</span>
+                <output id="tofloat-op"></output>
+            </section>
+            <section class="row">
+                <span>CurrSlot:</span>
+                <output id="currslot-op"></output>
+            </section>
+            <section class="row">
+                <span>homeSlot:</span>
+                <output id="homeslot-op"></output>
+            </section>
+            <section class="row">
+                <span>distance:</span>
+                <output id="distance-op"></output>
+            </section>
+        </article>
+    </main>
+
+</body>
+</html>
+
+<script type="module" src="./js/sequencer.mjs"></script>

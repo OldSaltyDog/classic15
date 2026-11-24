@@ -1,0 +1,12 @@
+:root {
+    --tilesize: 64px;
+    --fs-tile: 40px;
+    --grid-gap: 1px;
+    --grid-w: calc(var(--tilesize) * 4) + calc(var(--grid-gap) * 5);
+    --panel-pad: 4rem;
+    --panel-gap: 1rem;
+    --panel-padgap: calc(calc(var(--panel-pad) * 2) + calc(var(--panel-gap) / 2));
+    --fs-panel: 1.25rem;
+    --panel-w: calc(var(--grid-w) + calc(var(--panel-pad) * 2));
+    
+}

@@ -1,0 +1,177 @@
+:root {
+    font-size: 100%;
+}
+
+html {
+
+}
+
+body {
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: "Outfit";
+    background: linear-gradient(to bottom, #CCC, #BBB);
+}
+
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--panel-gap);
+}
+
+.gamebox {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    padding: 0 var(--panel-pad) var(--panel-pad) var(--panel-pad);
+    gap: var(--panel-gap);
+    background: linear-gradient(to bottom, #E3E6EB, #C6C9CD);
+    box-shadow: 0 0 0 4px hsl(194, 100%, 34%) inset, 0 0 2px 4px hsla(0 0 0 / .20) inset, 2px 4px 12px 0 hsla(0 0 0 / .25);
+    border-radius: .5rem;
+
+    & > h5 {
+        display: block;
+        text-align: center;
+        line-height: 1.5;
+        font-weight: 700;
+        font-size: 3rem;
+    }
+
+    & > .row {
+        display: flex;
+        justify-content: stretch;
+        gap: 1rem;
+
+        & > button {
+            display: flex;
+            flex: 1 1 50%;
+            font-size: var(--fs-panel);
+            justify-content: center;
+            align-items: center;
+        }
+    }
+}
+
+h6 {
+    font-size: calc(var(--fs-panel) + .25);
+    font-weight: 700;
+    line-height: 2;
+}
+
+output {
+    display: inline-flex;
+    justify-content: stretch;
+    flex: 1 1 50%;
+    gap: .25rem;
+    font-size: var(--fs-panel);
+    font-weight: 550;
+    & .wx-rune {
+        flex: 0 0 none;
+
+        + label {
+            flex: 1 1 auto;
+        }
+    }
+}
+
+#gamegrid {
+    display: block;
+    position: relative;
+    width: calc(var(--tilesize) * 4);
+    height: calc(var(--tilesize) * 4);
+    background: linear-gradient(#707880, #636669);
+    padding: var(--grid-gap);
+    box-shadow: 0 0 0 2px hsl(194, 100%, 34%);
+}
+
+.gametile {
+    position: absolute;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: var(--tilesize);
+    height: var(--tilesize);
+    
+    &:not(#floater) {
+        background: linear-gradient(to bottom, #E3E6EB, #C6C9CD);
+        padding: 8px;
+        font-size: var(--fs-tile);
+        color: hsl(194, 100%, 34%);
+        font-weight: 700;
+        border-radius: .25rem;
+        corner-shape: scoop;
+        box-shadow: 0 0 0 1px #333 inset, 1px 1px 2px #FFF inset, -1px -1px 2px hsla(0 0 0 / .35) inset;
+    }
+}
+
+#floater {
+    position: absolute;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: var(--tilesize);
+    height: var(--tilesize);
+    background: transparent;
+}
+
+:is(.gametile, #floater) {
+    text-shadow: 
+        1px 2px 2px hsla(0 0 0 / .35), 
+        2px 3px 6px hsla(0 0 0 / .20),
+        -1px -2px 1px hsla(0 0 100% / .5);
+    user-select: none;
+    transition: all .2s ease-in-out;
+}
+
+.wx-rune {
+    font-family: "Symbols Rounded";
+    font-style: normal;
+    font-size: inherit;
+    letter-spacing: normal;
+    text-transform: none;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    user-select: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: "liga";
+}
+
+.debugpanel {
+    font-family: "Outfit";
+    display: flex;
+    width: 20rem;
+    flex-direction: column;
+    align-items: stretch;
+    padding: 1rem;
+    background: linear-gradient(#E3E6EB, #C6C9CD);
+    border-radius: .5rem;
+    font-size: var(--fs-panel);
+    line-height: 1.5;
+
+    & > .row:nth-child(even) {
+        background: hsla(0 0 0 / .25);
+    }
+        
+    & > label {
+        display: inline-flex;
+        color: #44484B;
+        justify-content: flex-end;
+        align-items: center;
+        flex: 1 1 calc(50% - (var(--panel-pad) / 2));
+    }
+    & > output {
+        font-weight: 550;
+        display: inline-flex;
+        flex: 0 0 calc(50% - var(--panel-pad));
+        justify-content: flex-start;
+        align-items: center;
+        color: #44484B;
+    }
+}
