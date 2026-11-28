@@ -9,6 +9,7 @@ const solvableOp = document.querySelector('#solvable-op')
 const inversalsOp = document.querySelector('#inversals-op')
 const movecountOp = document.querySelector('#movecount-op')
 const minmovesOp = document.querySelector('#minmoves-op')
+const displacedOp = document.querySelector('#displaced-op')
 
 btnNew.addEventListener('click', (e) => {
 
@@ -18,7 +19,7 @@ btnNew.addEventListener('click', (e) => {
     inversalsOp.textContent = gamedata.invertions
     movecountOp.textContent = gamedata.movecount
     minmovesOp.textContent = gamedata.minmoves
-    
+    displacedOp.textContent = gamedata.displaced
 })
 
 gamegrid.grid.addEventListener( "tilemove", (ret) => {

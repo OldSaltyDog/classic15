@@ -3,5 +3,13 @@
     font-style: normal;
     font-weight: 100 700;
     font-display: normal;
-    src: url("/assets/fonts/material-symbols-rounded.woff2") format(woff2);
+    src: url("/assets/fonts/material-symbols-rounded.woff2") format("woff2");
+}
+
+@font-face {
+    font-family: "Dosis";
+    font-style: normal;
+    font-weight: 200 800;
+    font-display: normal;
+    src: url("/assets/fonts/Dosis-VariableFont_wght.ttf") format("ttf");
 }

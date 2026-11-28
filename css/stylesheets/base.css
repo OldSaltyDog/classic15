@@ -2,6 +2,11 @@
     font-size: 100%;
 }
 
+.dosis-tiles {
+    font-family: "Dosis";
+    font-weight: 700;
+}
+
 html {
 
 }
@@ -12,7 +17,7 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    font-family: "Outfit";
+    font-family: "Antonio";
     background: linear-gradient(to bottom, #CCC, #BBB);
 }
 
@@ -27,7 +32,7 @@ main {
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    padding: 0 var(--panel-pad) var(--panel-pad) var(--panel-pad);
+    padding: calc(var(--panel-pad) / 3) var(--panel-pad) var(--panel-pad) var(--panel-pad);
     gap: var(--panel-gap);
     background: linear-gradient(to bottom, #E3E6EB, #C6C9CD);
     box-shadow: 0 0 0 4px hsl(194, 100%, 34%) inset, 0 0 2px 4px hsla(0 0 0 / .20) inset, 2px 4px 12px 0 hsla(0 0 0 / .25);
@@ -54,6 +59,28 @@ main {
             align-items: center;
         }
     }
+}
+
+#logo {
+    width: 256px;
+    aspect-ratio: 4;
+}
+
+h3 {
+    --angle: 45deg;
+    --gradient: oklab(45.5% -0.058 -0.07), oklab(67.2% -0.046 0.03);
+
+    background: linear-gradient(var(--angle), var(--gradient));
+    background-clip: text;
+    color: hsl(180 45% 30% / .15);
+    mix-blend-mode: difference;
+    font-family: "Afacad Flux";
+    font-weight: 800;
+    text-align: center;
+    font-size: 3.5rem;
+    font-weight: 700;
+    line-height: 1.15;
+    text-shadow: 2px 2px 2px hsl(0 0 0 / .25);
 }
 
 h6 {
@@ -101,7 +128,7 @@ output {
         padding: 8px;
         font-size: var(--fs-tile);
         color: hsl(194, 100%, 34%);
-        font-weight: 700;
+        font-weight: 450;
         border-radius: .25rem;
         corner-shape: scoop;
         box-shadow: 0 0 0 1px #333 inset, 1px 1px 2px #FFF inset, -1px -1px 2px hsla(0 0 0 / .35) inset;
@@ -144,7 +171,7 @@ output {
 }
 
 .debugpanel {
-    font-family: "Outfit";
+    font-family: "Dosis";
     display: flex;
     width: 20rem;
     flex-direction: column;

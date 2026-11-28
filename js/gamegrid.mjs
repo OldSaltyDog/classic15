@@ -35,12 +35,6 @@ export default class GameGrid {
                 const tileId = parseInt(e.target.id.match(/\d+/g))
                 this.#moveTile(e.detail);
             })
-            /* this.#tiles[i].tileUI.addEventListener( "click", (e) => {
-                console.log('hey')
-                const tileId = parseInt(e.target.id.match(/\d+/g))
-                console.log(e.target.id)
-                this.#moveTile(tileId)
-            }) */
         }
 
         this.#addFloater();
@@ -60,38 +54,17 @@ export default class GameGrid {
         const floatSlot = this.#floater.currslot
         const tileSlot = movedata.currslot
 
-//        const toFloat = slotDistance(tileSlot, floatSlot)
-
         if ( slotDistance(tileSlot, floatSlot) === 1 ) {
             this.#tiles[movedata.tileid].toSlot(floatSlot)
             this.#floater.toSlot(tileSlot)
 
-            movedata.movecount = ++this.#movecount
-            movedata.inversions = this.#getInversions()
-            movedata.minmoves = this.#minMoves()
+            movedata.movecount = ++this.#movecount;
+            movedata.inversions = this.#getInversions();
+            movedata.minmoves = this.#minMoves();
 
             const event = new CustomEvent("tilemove", { detail: movedata } )
             this.#grid.dispatchEvent(event)
         }
-    }
-
-    #slotData(slotid) {
-        const row = parseInt(slotid % 4)
-        const col = parseInt(slotid / 4)
-
-        const slotdata = {
-            id: slotid,
-            grid: {
-                row: row,
-                col: col
-            },
-            pos: {
-                x: `${col * this.#tilesize}px`,
-                y: `${row * this.#tilesize}px`
-            }
-        }
-
-        return slotdata
     }
 
     #getInversions() {
@@ -102,24 +75,41 @@ export default class GameGrid {
         return countInversions(arr)
     }
 
-    newGame() {
-        this.#startorder = this.#newStartOrder();
-        this.#setBoard();
-        return this.#gamestart()
+    #minMoves() {
+        return this.#tiles
+            .filter( tile => tile.tileUI.id !== "floater")
+            .map( tile => tile.distance )
+            .reduce( (sum, distance) => sum + distance )
+    }
+
+    #gamestart() {
+        const inversions = this.#getInversions();
+        const floaterRow = (4 - Math.floor(this.#floater.currslot / 4)) - 1;
+        const isSolvable = (inversions + floaterRow) % 2 === 0;
+
+        const gamedata = {
+            solvable: isSolvable,
+            invertions: inversions,
+            displaced: this.#oopTiles(),
+            minmoves: this.#minMoves(),
+            movecount: this.#movecount
+        };
+
+        return gamedata;
     }
 
     #setBoard() {
         if (!this.#startorder)
-            this.#startorder = this.#newStartOrder();
+            this.#startorder = this.#startStack();
 
         this.#movecount = 0;
+
         for (let i = 0; i < this.#tiles.length; i++) {
             this.#tiles[i].toSlot(this.#startorder[i])
         }
     }
 
-
-    #newStartOrder() {
+    #startStack() {
         const stack = [...Array(16).keys()];
         for (let i = stack.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
@@ -129,48 +119,26 @@ export default class GameGrid {
         return stack;
     }
 
+    #oopTiles() {
+        return this.#tiles.filter( tile => tile.distance > 0 ).length;
+    }
+
     get grid() {
         return this.#grid
-    }
-
-    #minMoves() {
-        return this.#tiles
-            .filter( tile => tile.tileUI.id !== "floater")
-            .map( tile => tile.distance )
-            .reduce( (sum, distance) => sum + distance )
-    }
-
-    restart() {
-        this.#setBoard();
-        return this.#gamestart()
-    }
-
-    #gamestart() {
-        const inversions = this.#getInversions();
-        const minmoves = this.#minMoves();
-        const floaterRow = (4 - Math.floor(this.#floater.currslot / 4)) - 1
-        const isSolvable = (inversions + floaterRow) % 2 === 0;
-
-        const gamedata = {
-            solvable: isSolvable,
-            invertions: inversions,
-            minmoves: minmoves,
-            movecount: this.#movecount
-        };
-
-        return gamedata;
     }
 
     get tileSize() {
         return this.#tilesize;
     }
 
-    tileMoved(ret) {
-
+    newGame() {
+        this.#startorder = this.#startStack();
+        this.#setBoard();
+        return this.#gamestart()
     }
 
-    started(fn) {   
-
+    restart() {
+        this.#setBoard();
+        return this.#gamestart()
     }
-
 }
